@@ -1,4 +1,4 @@
-from src.database import create_table
+from src.database import create_table, insert_into_table
 
 class Parser:
 
@@ -22,6 +22,17 @@ class Parser:
             columns = parts[3:]
 
             create_table(table_name, columns)
+
+        elif parts[0].upper() == "INSERT":
+
+            if len(parts) < 3:
+                print("Usage: INSERT table_name value1 value2 ...")
+                return
+
+            table_name = parts[1]
+            values = parts[2:]
+
+            insert_into_table(table_name, values)
 
         else:
             print("Unknown command")
