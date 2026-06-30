@@ -1,4 +1,4 @@
-from src.database import create_table, insert_into_table
+from src.database import create_table, insert_into_table, select_from_table
 
 class Parser:
 
@@ -33,6 +33,25 @@ class Parser:
             values = parts[2:]
 
             insert_into_table(table_name, values)
+
+        elif parts[0].upper() == "SELECT":
+
+            if len(parts) == 2:
+                table_name = parts[1]
+            elif len(parts) >= 4 and parts[1] == "*" and parts[2].upper() == "FROM":
+                table_name = parts[3]
+            else:
+                print("Usage: SELECT table_name")
+                print("   or: SELECT * FROM table_name")
+                return
+
+            table = select_from_table(table_name)
+
+            if table is None:
+                return
+
+            for row in table:
+                print(" | ".join(row))
 
         else:
             print("Unknown command")
